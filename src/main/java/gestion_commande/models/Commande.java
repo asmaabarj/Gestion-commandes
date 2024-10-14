@@ -1,13 +1,13 @@
 package gestion_commande.models;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import gestion_commande.enums.Statut;
 
 public class Commande {
 
     private Long id;
-    private Date dateCommande;
+    private LocalDate dateCommande;
     private Statut statut;
     private Long clientId;
 
@@ -15,7 +15,7 @@ public class Commande {
         // Constructeur par défaut
     }
 
-    public Commande(Date dateCommande, Statut statut, Long clientId) {
+    public Commande(LocalDate dateCommande, Statut statut, Long clientId) {
         this.dateCommande = dateCommande;
         this.statut = statut;
         this.clientId = clientId;
@@ -26,7 +26,7 @@ public class Commande {
         return id;
     }
 
-    public Date getDateCommande() {
+    public LocalDate getDateCommande() {
         return dateCommande;
     }
 
@@ -43,7 +43,7 @@ public class Commande {
         this.id = id;
     }
 
-    public void setDateCommande(Date dateCommande) {
+    public void setDateCommande(LocalDate dateCommande) {
         this.dateCommande = dateCommande;
     }
 
