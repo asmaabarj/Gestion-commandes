@@ -1,24 +1,47 @@
 package gestion_commande.models;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import gestion_commande.enums.Statut;
 
+import javax.persistence.*;
+
+
+@Entity
+@Table(name = "commande")
 public class Commande {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "date_commande", nullable = false)
     private LocalDate dateCommande;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "statut", nullable = false, columnDefinition = "ENUM('ENATTENTE','ENTRAITEMENT','EXPIDIEE','LIVREE','ANNULEE')")
     private Statut statut;
-    private Long clientId;
+
+    @ManyToOne
+    @JoinColumn(name = "client_id", nullable = false)
+    private Client client;
+    
+    @ManyToMany
+    @JoinTable(
+        name = "panier",
+        joinColumns = @JoinColumn(name = "commande_id"),
+        inverseJoinColumns = @JoinColumn(name = "produit_id")
+    )
+    private List<Produit> produits;
 
     public Commande() {
-        // Constructeur par défaut
     }
 
-    public Commande(LocalDate dateCommande, Statut statut, Long clientId) {
+    public Commande(LocalDate dateCommande, Statut statut, Client client) {
         this.dateCommande = dateCommande;
         this.statut = statut;
-        this.clientId = clientId;
+        this.client = client;
     }
 
     // Getters
@@ -34,8 +57,8 @@ public class Commande {
         return statut;
     }
 
-    public Long getClientId() {
-        return clientId;
+    public Client getClient() {
+        return client;
     }
 
     // Setters
@@ -51,8 +74,8 @@ public class Commande {
         this.statut = statut;
     }
 
-    public void setClientId(Long clientId) {
-        this.clientId = clientId;
+    public void setClient(Client client) {
+        this.client = client;
     }
 
     @Override
@@ -61,7 +84,7 @@ public class Commande {
                 "id=" + id +
                 ", dateCommande=" + dateCommande +
                 ", statut=" + statut +
-                ", clientId=" + clientId +
+                ", client=" + client +
                 '}';
     }
 }

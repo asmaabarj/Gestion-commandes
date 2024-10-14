@@ -1,12 +1,34 @@
 package gestion_commande.models;
 
+import javax.persistence.*;
+import javax.validation.constraints.*;
+
+@Entity
+@Table(name = "produit")
 public class Produit {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @NotBlank(message = "Le nom du produit est obligatoire")
+    @Size(max = 100, message = "Le nom du produit ne peut pas dépasser 100 caractères")
     private String nom;
+
+    @Size(max = 500, message = "La description ne peut pas dépasser 500 caractères")
     private String description;
-    private double prix;
-    private int stock;
+
+    @NotNull(message = "Le prix est obligatoire")
+    @Positive(message = "Le prix doit être positif")
+    private Double prix;
+
+    @NotNull(message = "Le stock est obligatoire")
+    @PositiveOrZero(message = "Le stock ne peut pas être négatif")
+    private Integer stock;
+    @ManyToMany
+    @JoinColumn(name = "commande_id", nullable = false) 
+    private Commande commande;
+    
 
     public Produit() {
         // Constructeur par défaut

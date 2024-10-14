@@ -1,19 +1,37 @@
 package gestion_commande.models;
 
+import javax.persistence.*;
+import javax.validation.constraints.*;
 import gestion_commande.enums.Role;
 
+@Entity
+@Table(name = "utilisateur")
 public abstract class Utilisateur {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Le nom est obligatoire")
+    @Size(max = 50, message = "Le nom ne peut pas dépasser 50 caractères")
     private String nom;
 
+    @NotBlank(message = "Le prénom est obligatoire")
+    @Size(max = 50, message = "Le prénom ne peut pas dépasser 50 caractères")
     private String prenom;
 
+    @NotBlank(message = "L'email est obligatoire")
+    @Email(message = "L'email doit être valide")
+    @Column(unique = true)
     private String email;
 
+    @NotBlank(message = "Le mot de passe est obligatoire")
+    @Size(min = 3, message = "Le mot de passe doit contenir au moins 6 caractères")
     private String motDePasse;
 
+    @NotNull(message = "Le rôle est obligatoire")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false, columnDefinition = "ENUM('Client','Admin')")
     private Role role;
     
     public Utilisateur() {
@@ -68,5 +86,6 @@ public abstract class Utilisateur {
                 ", role=" + role +
                 '}';
     }
+
 
 }
