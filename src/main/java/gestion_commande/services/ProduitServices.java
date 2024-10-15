@@ -1,5 +1,62 @@
 package gestion_commande.services;
 
+
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import gestion_commande.models.Produit;
+import gestion_commande.repo.ProduitImpl;
+
+
+
+
 public class ProduitServices {
+	
+	
+	private ProduitImpl ProduitImpl=new ProduitImpl(); 
+	
+public ProduitServices() {
+	// TODO Auto-generated constructor stub
+}
+
+
+
+public  void create(Produit entity) {
+	ProduitImpl.create(entity);
+}
+
+ public   Optional<Produit> findById(Long id){
+   	return ProduitImpl.findById(id);
+
+ }
+
+   void update(Produit entity){
+	   ProduitImpl.update(entity);
+
+   }
+
+   void delete(Long id){
+	   ProduitImpl.delete(id);
+
+   }
+
+    public List<Produit> getAll(){
+    	  List<Produit> p = ProduitImpl.getAll();
+    	/*  if (nom != null && !nom.isEmpty()) {
+    	   		return p.stream().filter(produit -> produit.getNom().toLowerCase().contains(nom.toLowerCase())).collect(Collectors.toList());
+    	   	}*/
+    	   	return p;
+    }
+  public List<Produit> getPage(int page,int pageSize){
+	  
+	  return ProduitImpl.getPage(page, pageSize);
+	  
+  }
+  public Long countProduit() {
+	  return ProduitImpl.count();
+  }
+  
 
 }

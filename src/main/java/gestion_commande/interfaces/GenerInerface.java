@@ -18,7 +18,7 @@ public interface GenerInerface<T,ID> {
 	    List<T> getPage(int page,int pageSize);
 	    
 	  		
-	    Integer count();
+	    Long count();
 	    
 
 }

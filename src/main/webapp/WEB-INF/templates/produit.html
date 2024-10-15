@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="bg-gray-100">
+<head>
+    <title>Liste des Produits</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Liste des Produits</h1>
+    <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+        <table class="min-w-full table-auto">
+            <thead class="bg-gray-200">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">ID</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Nom</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Description</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Prix</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                <tr th:each="produit : ${produits}" class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${produit.id}"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${produit.nom}"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${produit.description}"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${produit.prix + ' €'}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
