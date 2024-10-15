@@ -19,7 +19,7 @@ public class Commande {
 
     @Column(name = "date_commande", nullable = false)
     private LocalDate dateCommande;
-    
+
     @NotNull(message = "Statut est obligatoire")
     @Enumerated(EnumType.STRING)
     @Column(name = "statut", nullable = false)
@@ -28,13 +28,9 @@ public class Commande {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
-    
+
     @ManyToMany
-    @JoinTable(
-        name = "commande_produit",
-        joinColumns = @JoinColumn(name = "commande_id"),
-        inverseJoinColumns = @JoinColumn(name = "produit_id")
-    )
+    @JoinTable(name = "commande_produit", joinColumns = @JoinColumn(name = "commande_id"), inverseJoinColumns = @JoinColumn(name = "produit_id"))
     private Set<Produit> produits = new HashSet<>();
 
     public Commande() {
