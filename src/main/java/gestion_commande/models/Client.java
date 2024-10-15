@@ -5,6 +5,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
+@DiscriminatorValue("Client")
 public class Client extends Utilisateur {
 
     @NotBlank(message = "L'adresse de livraison ne peut pas être vide")

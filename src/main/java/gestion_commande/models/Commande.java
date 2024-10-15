@@ -8,7 +8,7 @@ import java.util.Set;
 import gestion_commande.enums.Statut;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+
 
 
 @Entity
@@ -22,9 +22,8 @@ public class Commande {
     @Column(name = "date_commande", nullable = false)
     private LocalDate dateCommande;
     
-    @NotNull(message = "Status est obligatoire")
-    @Column(name = "statut", nullable = false, columnDefinition = "ENATTENTE")
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING) 
+    @Column(nullable = false)
     private Statut statut;
 
     @ManyToOne

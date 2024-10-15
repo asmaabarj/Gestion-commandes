@@ -5,9 +5,8 @@ import javax.validation.constraints.*;
 import gestion_commande.enums.Role;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
-@Table(name = "utilisateur")
 public abstract class Utilisateur {
 
     @Id
