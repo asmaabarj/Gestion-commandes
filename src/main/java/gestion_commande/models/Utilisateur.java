@@ -6,6 +6,8 @@ import gestion_commande.enums.Role;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "user_type", discriminatorType = DiscriminatorType.STRING)
+@Table(name = "utilisateur")
 public abstract class Utilisateur {
 
     @Id

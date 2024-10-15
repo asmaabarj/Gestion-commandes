@@ -5,8 +5,9 @@ import gestion_commande.enums.Role;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-@Entity
 
+@Entity
+@DiscriminatorValue("Admin")
 public class Admin extends Utilisateur {
 
     @Column(name = "niveau_acces")
