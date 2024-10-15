@@ -1,5 +1,8 @@
 package gestion_commande.models;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -25,9 +28,9 @@ public class Produit {
     @NotNull(message = "Le stock est obligatoire")
     @PositiveOrZero(message = "Le stock ne peut pas être négatif")
     private Integer stock;
-    @ManyToMany
-    @JoinColumn(name = "commande_id", nullable = false) 
-    private Commande commande;
+    
+    @ManyToMany(mappedBy = "produits")
+    private Set<Commande> commande = new HashSet<>();
     
 
     public Produit() {

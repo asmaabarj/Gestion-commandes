@@ -1,11 +1,14 @@
 package gestion_commande.models;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.HashSet;
+
+import java.util.Set;
 
 import gestion_commande.enums.Statut;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -18,9 +21,10 @@ public class Commande {
 
     @Column(name = "date_commande", nullable = false)
     private LocalDate dateCommande;
-
+    
+    @NotNull(message = "Status est obligatoire")
+    @Column(name = "statut", nullable = false, columnDefinition = "ENATTENTE")
     @Enumerated(EnumType.STRING)
-    @Column(name = "statut", nullable = false, columnDefinition = "ENUM('ENATTENTE','ENTRAITEMENT','EXPIDIEE','LIVREE','ANNULEE')")
     private Statut statut;
 
     @ManyToOne
@@ -29,11 +33,11 @@ public class Commande {
     
     @ManyToMany
     @JoinTable(
-        name = "panier",
+        name = "produit_commande",
         joinColumns = @JoinColumn(name = "commande_id"),
         inverseJoinColumns = @JoinColumn(name = "produit_id")
     )
-    private List<Produit> produits;
+    private Set<Produit> produits;
 
     public Commande() {
     }

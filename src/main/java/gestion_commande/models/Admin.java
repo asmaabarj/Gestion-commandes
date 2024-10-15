@@ -6,7 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
-@Table(name = "admin")
+
 public class Admin extends Utilisateur {
 
     @Column(name = "niveau_acces")

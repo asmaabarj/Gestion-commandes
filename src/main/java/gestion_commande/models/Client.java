@@ -5,7 +5,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
-@Table(name = "client")
 public class Client extends Utilisateur {
 
     @NotBlank(message = "L'adresse de livraison ne peut pas être vide")

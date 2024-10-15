@@ -5,7 +5,7 @@ import javax.validation.constraints.*;
 import gestion_commande.enums.Role;
 
 @Entity
-@Table(name = "utilisateur")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public abstract class Utilisateur {
 
     @Id
@@ -30,9 +30,10 @@ public abstract class Utilisateur {
     private String motDePasse;
 
     @NotNull(message = "Le rôle est obligatoire")
+    @Column(name = "role", nullable = false, columnDefinition = "role")
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false, columnDefinition = "ENUM('Client','Admin')")
     private Role role;
+
     
     public Utilisateur() {
 		// TODO Auto-generated constructor stub
