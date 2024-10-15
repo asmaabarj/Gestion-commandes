@@ -5,7 +5,7 @@ import javax.persistence.Persistence;
 import javax.persistence.EntityManager;
 
 public class EntityManagerUtil {
-    private static final String PERSISTENCE_UNIT_NAME = "myPersistenceUnit";
+    private static final String PERSISTENCE_UNIT_NAME = "gestiondeCommandes";
     private static EntityManagerFactory factory;
 
     static {
@@ -26,4 +26,5 @@ public class EntityManagerUtil {
             factory.close();
         }
     }
+
 }

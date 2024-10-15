@@ -5,11 +5,11 @@ import javax.validation.constraints.*;
 import gestion_commande.enums.Role;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Utilisateur {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @NotBlank(message = "Le nom est obligatoire")
@@ -30,7 +30,6 @@ public abstract class Utilisateur {
     private String motDePasse;
 
     @NotNull(message = "Le rôle est obligatoire")
-    @Column(name = "role", nullable = false, columnDefinition = "role")
     @Enumerated(EnumType.STRING)
     private Role role;
 

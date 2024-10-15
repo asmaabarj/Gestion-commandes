@@ -1,17 +1,13 @@
 package gestion_commande.models;
 
 import gestion_commande.enums.Role;
-
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
 @Entity
-
 public class Admin extends Utilisateur {
 
-    @Column(name = "niveau_acces")
     @NotNull(message = "Le niveau d'accès ne peut pas être nul")
-
     private Integer niveauAcces;
 
     public Admin() {

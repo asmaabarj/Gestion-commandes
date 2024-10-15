@@ -1,4 +1,4 @@
-package gestion_commande.utils;
+package gestion_commande.utilis;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;

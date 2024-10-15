@@ -2,14 +2,12 @@ package gestion_commande.models;
 
 import java.time.LocalDate;
 import java.util.HashSet;
-
 import java.util.Set;
 
 import gestion_commande.enums.Statut;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
 
 @Entity
 @Table(name = "commande")
@@ -22,22 +20,22 @@ public class Commande {
     @Column(name = "date_commande", nullable = false)
     private LocalDate dateCommande;
     
-    @NotNull(message = "Status est obligatoire")
-    @Column(name = "statut", nullable = false, columnDefinition = "ENATTENTE")
+    @NotNull(message = "Statut est obligatoire")
     @Enumerated(EnumType.STRING)
+    @Column(name = "statut", nullable = false)
     private Statut statut;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "client_id", nullable = false)
     private Client client;
     
     @ManyToMany
     @JoinTable(
-        name = "produit_commande",
+        name = "commande_produit",
         joinColumns = @JoinColumn(name = "commande_id"),
         inverseJoinColumns = @JoinColumn(name = "produit_id")
     )
-    private Set<Produit> produits;
+    private Set<Produit> produits = new HashSet<>();
 
     public Commande() {
     }
@@ -90,5 +88,23 @@ public class Commande {
                 ", statut=" + statut +
                 ", client=" + client +
                 '}';
+    }
+
+    public void ajouterProduit(Produit produit) {
+        this.produits.add(produit);
+        produit.getCommandes().add(this);
+    }
+
+    public void retirerProduit(Produit produit) {
+        this.produits.remove(produit);
+        produit.getCommandes().remove(this);
+    }
+
+    public Set<Produit> getProduits() {
+        return produits;
+    }
+
+    public void setProduits(Set<Produit> produits) {
+        this.produits = produits;
     }
 }

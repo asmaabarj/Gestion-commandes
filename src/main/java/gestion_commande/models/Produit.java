@@ -92,6 +92,14 @@ public class Produit {
         this.stock = stock;
     }
 
+    public Set<Commande> getCommandes() {
+        return commande;
+    }
+
+    public void setCommandes(Set<Commande> commandes) {
+        this.commande = commandes;
+    }
+
     @Override
     public String toString() {
         return "Produit{" +

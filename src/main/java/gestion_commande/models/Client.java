@@ -8,11 +8,9 @@ import javax.validation.constraints.*;
 public class Client extends Utilisateur {
 
     @NotBlank(message = "L'adresse de livraison ne peut pas être vide")
-    @Column(name = "adresse_livraison", nullable = false)
     private String adresseLivraison;
 
     @NotBlank(message = "Le moyen de paiement ne peut pas être vide")
-    @Column(name = "moyen_paiement", nullable = false)
     private String moyenPaiement;
 
     public Client() {

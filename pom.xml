@@ -13,15 +13,13 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.1</version>
 				<configuration>
-<<<<<<< HEAD
+
 					<source>1.8</source>
 					<target>1.8</target>
-				</configuration>
-=======
+
 <source>1.8</source>
                     <target>1.8</target>
                     				</configuration>
->>>>>>> b62acec58b5e2226979bd7fec9f6336576c0f5a2
 			</plugin>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
