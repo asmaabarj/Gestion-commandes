@@ -34,15 +34,8 @@ public class Produit {
     
 
     public Produit() {
-        // Constructeur par défaut
     }
 
-    public Produit(String nom, String description, double prix, int stock) {
-        this.nom = nom;
-        this.description = description;
-        this.prix = prix;
-        this.stock = stock;
-    }
 
     // Getters
     public Long getId() {

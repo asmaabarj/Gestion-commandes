@@ -27,12 +27,9 @@
         <i class="fas fa-plus mr-2"></i> Créer un produit
       </button>
 
-      <form @submit.prevent="searchProducts" class="flex items-center">
-        <input
-          type="text"
-          x-model="searchQuery"
-          placeholder="Rechercher un produit..."
-          class="px-4 py-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
+      <form  action="" method="get" class="flex items-center">
+            <input type="text" name="search" value="" placeholder="Rechercher un Produit..." 
+        class="px-4 py-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
         />
         <button
           type="submit"
@@ -41,6 +38,10 @@
           <i class="fas fa-search mr-2"></i> Rechercher
         </button>
       </form>
+          <a href="./ProduitServlet" 
+        class="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-orange-600 focus:ring-offset-2">
+      Tous les Produit
+    </a>
     </div>
 
     <div class="overflow-x-auto bg-white shadow-md rounded-lg">
@@ -173,65 +174,86 @@
           <h3 class="text-lg leading-6 font-medium text-gray-900">
             Créer un nouveau produit
           </h3>
-          <div class="mt-2 px-7 py-3">
-            <div class="mb-3">
-              <label for="create-nom" class="block text-sm font-medium text-gray-700 text-left mb-1">Nom</label>
-              <input
-                id="create-nom"
-                type="text"
-                x-model="newProduct.nom"
-                class="px-3 py-2 border rounded-lg w-full"
-                placeholder="Nom du produit"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="create-description" class="block text-sm font-medium text-gray-700 text-left mb-1">Description</label>
-              <textarea
-                id="create-description"
-                x-model="newProduct.description"
-                class="px-3 py-2 border rounded-lg w-full"
-                placeholder="Description du produit"
-                rows="3"
-              ></textarea>
-            </div>
-            <div class="mb-3 flex space-x-2">
-              <div class="w-1/2">
-                <label for="create-prix" class="block text-sm font-medium text-gray-700 text-left mb-1">Prix</label>
+          <form id="createForm" action="" method="post">
+            <input type="hidden" name="action" value="create" />
+            <div class="mt-2 px-7 py-3">
+              <div class="mb-3">
+                <label
+                  for="create-nom"
+                  class="block text-sm font-medium text-gray-700 text-left mb-1"
+                  >Nom</label
+                >
+                <input
+                  id="create-nom"
+                  type="text"
+                  name="nom"
+                  class="px-3 py-2 border rounded-lg w-full"
+                  placeholder="Nom du produit"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label
+                  for="create-description"
+                  class="block text-sm font-medium text-gray-700 text-left mb-1"
+                  >Description</label
+                >
+                <textarea
+                  id="create-description"
+                  name="description"
+                  class="px-3 py-2 border rounded-lg w-full"
+                  placeholder="Description du produit"
+                  rows="3"
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label
+                  for="create-prix"
+                  class="block text-sm font-medium text-gray-700 text-left mb-1"
+                  >Prix</label
+                >
                 <input
                   id="create-prix"
                   type="number"
-                  x-model="newProduct.prix"
+                  name="prix"
                   class="px-3 py-2 border rounded-lg w-full"
                   placeholder="Prix"
                   step="0.01"
+                  required
                 />
               </div>
-              <div class="w-1/2">
-                <label for="create-stock" class="block text-sm font-medium text-gray-700 text-left mb-1">Stock</label>
+              <div class="mb-3">
+                <label
+                  for="create-stock"
+                  class="block text-sm font-medium text-gray-700 text-left mb-1"
+                  >Stock</label
+                >
                 <input
                   id="create-stock"
                   type="number"
-                  x-model="newProduct.stock"
+                  name="stock"
                   class="px-3 py-2 border rounded-lg w-full"
                   placeholder="Stock"
+                  required
                 />
               </div>
             </div>
-          </div>
-          <div class="items-center px-4 py-3">
-            <button
-              @click="showCreateModal = false"
-              class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300"
-            >
-              Annuler
-            </button>
-            <button
-              @click="createProduct"
-              class="mt-3 px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-green-300"
-            >
-              Créer
-            </button>
-          </div>
+            <div class="items-center px-4 py-3">
+              <button
+                type="button"
+                @click="showCreateModal = false"
+                class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              >
+                Annuler
+              </button>
+              <button
+                type="submit"
+                class="mt-3 px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+              >
+                Créer
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -249,65 +271,87 @@
           <h3 class="text-lg leading-6 font-medium text-gray-900">
             Mettre à jour le produit
           </h3>
-          <div class="mt-2 px-7 py-3">
-            <div class="mb-3">
-              <label for="update-nom" class="block text-sm font-medium text-gray-700 text-left mb-1">Nom</label>
-              <input
-                id="update-nom"
-                type="text"
-                x-model="currentProduct.nom"
-                class="px-3 py-2 border rounded-lg w-full"
-                placeholder="Nom du produit"
-              />
-            </div>
-            <div class="mb-3">
-              <label for="update-description" class="block text-sm font-medium text-gray-700 text-left mb-1">Description</label>
-              <textarea
-                id="update-description"
-                x-model="currentProduct.description"
-                class="px-3 py-2 border rounded-lg w-full"
-                placeholder="Description du produit"
-                rows="3"
-              ></textarea>
-            </div>
-            <div class="mb-3 flex space-x-2">
-              <div class="w-1/2">
-                <label for="update-prix" class="block text-sm font-medium text-gray-700 text-left mb-1">Prix</label>
+          <form id="updateForm" action="" method="post">
+            <input type="hidden" name="action" value="update" />
+            <input type="hidden" name="id" :value="currentProduct.id" />
+            <div class="mt-2 px-7 py-3">
+              <div class="mb-3">
+                <label
+                  for="update-nom"
+                  class="block text-sm font-medium text-gray-700 text-left mb-1"
+                  >Nom</label
+                >
+                <input
+                  id="update-nom"
+                  type="text"
+                  name="nom"
+                  :value="currentProduct.nom"
+                  class="px-3 py-2 border rounded-lg w-full"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label
+                  for="update-description"
+                  class="block text-sm font-medium text-gray-700 text-left mb-1"
+                  >Description</label
+                >
+                <textarea
+                  id="update-description"
+                  name="description"
+                  class="px-3 py-2 border rounded-lg w-full"
+                  rows="3"
+                  x-text="currentProduct.description"
+                ></textarea>
+              </div>
+              <div class="mb-3">
+                <label
+                  for="update-prix"
+                  class="block text-sm font-medium text-gray-700 text-left mb-1"
+                  >Prix</label
+                >
                 <input
                   id="update-prix"
                   type="number"
-                  x-model="currentProduct.prix"
+                  name="prix"
+                  :value="currentProduct.prix"
                   class="px-3 py-2 border rounded-lg w-full"
-                  placeholder="Prix"
                   step="0.01"
+                  required
                 />
               </div>
-              <div class="w-1/2">
-                <label for="update-stock" class="block text-sm font-medium text-gray-700 text-left mb-1">Stock</label>
+              <div class="mb-3">
+                <label
+                  for="update-stock"
+                  class="block text-sm font-medium text-gray-700 text-left mb-1"
+                  >Stock</label
+                >
                 <input
                   id="update-stock"
                   type="number"
-                  x-model="currentProduct.stock"
+                  name="stock"
+                  :value="currentProduct.stock"
                   class="px-3 py-2 border rounded-lg w-full"
-                  placeholder="Stock"
+                  required
                 />
               </div>
             </div>
-          </div>
-          <div class="items-center px-4 py-3">
-            <button
-              @click="showUpdateModal = false"
-              class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300"
-            >
-              Annuler
-            </button>
-            <button
-              @click="updateProduct"
-              class="mt-3 px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
-            >
-              Mettre à jour
-            </button>
-          </div>
+            <div class="items-center px-4 py-3">
+              <button
+                type="button"
+                @click="showUpdateModal = false"
+                class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              >
+                Annuler
+              </button>
+              <button
+                type="submit"
+                class="mt-3 px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
+              >
+                Mettre à jour
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -325,28 +369,33 @@
           <h3 class="text-lg leading-6 font-medium text-gray-900">
             Confirmer la suppression
           </h3>
-          <div class="mt-2 px-7 py-3">
-            <p class="text-sm text-gray-500">
-              Êtes-vous sûr de vouloir supprimer le produit "<span
-                x-text="currentProduct.nom"
-              ></span
-              >" ?
-            </p>
-          </div>
-          <div class="items-center px-4 py-3">
-            <button
-              @click="showDeleteModal = false"
-              class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300"
-            >
-              Annuler
-            </button>
-            <button
-              @click="deleteProduct"
-              class="mt-3 px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300"
-            >
-              Supprimer
-            </button>
-          </div>
+          <form id="deleteForm" action="" method="post">
+           <input type="hidden" name="action" value="delete" />
+            <div class="mt-2 px-7 py-3">
+              <input type="hidden" x-model="currentProduct.id" name="id" />
+              <p class="text-sm text-gray-500">
+                Êtes-vous sûr de vouloir supprimer le produit "<span
+                  x-text="currentProduct.nom"
+                ></span
+                >" ?
+              </p>
+            </div>
+            <div class="items-center px-4 py-3">
+              <button
+                type="button"
+                @click="showDeleteModal = false"
+                class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300"
+              >
+                Annuler
+              </button>
+              <button
+                type="submit"
+                class="mt-3 px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300"
+              >
+                Supprimer
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
@@ -380,17 +429,13 @@
             this.showDeleteModal = true;
           },
           createProduct() {
-            console.log("Création du produit:", this.newProduct);
-            this.showCreateModal = false;
-            this.newProduct = { nom: "", description: "", prix: 0, stock: 0 };
+            document.getElementById("createForm").submit();
           },
           updateProduct() {
-            console.log("Mise à jour du produit:", this.currentProduct);
-            this.showUpdateModal = false;
+            document.getElementById("updateForm").submit();
           },
           deleteProduct() {
-            console.log("Suppression du produit:", this.currentProduct);
-            this.showDeleteModal = false;
+            document.getElementById("deleteForm").submit();
           },
           searchProducts() {
             console.log("Recherche de produits:", this.searchQuery);

@@ -14,6 +14,7 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import gestion_commande.models.Produit;
 import gestion_commande.services.ProduitServices;
+import gestion_commande.utilis.LoggerMessage;
 
 public class ProduitServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -47,10 +48,27 @@ public class ProduitServlet extends HttpServlet {
 		String pageStr = request.getParameter("page");
 		int page = (pageStr != null) ? Integer.parseInt(pageStr) : 1;
 		int pageSize = 5;
+		List<Produit> produits=null;
+		int totalPages=0;
+		String searchQuery = request.getParameter("search");
 
-		List<Produit> produits = produitser.getPage(page, pageSize);
-		long totalProduits = produitser.countProduit();
-		int totalPages = (int) Math.ceil((double) totalProduits / pageSize);
+		if (request.getParameter("page") != null) {
+			page = Integer.parseInt(request.getParameter("page"));
+		}
+		if (request.getParameter("pageSize") != null) {
+			pageSize = Integer.parseInt(request.getParameter("pageSize"));
+		}
+		if (searchQuery != null && !searchQuery.isEmpty()) {
+			 produits = produitser.getAll(searchQuery);
+			 totalPages = produits.size();
+		} else {
+			 produits = produitser.getPage(page, pageSize);
+				long totalProduits = produitser.countProduit();
+				 totalPages = (int) Math.ceil((double) totalProduits / pageSize);
+
+		}
+		
+		
 
 		WebContext context = new WebContext(request, response, getServletContext());
 		context.setVariable("produits", produits);
@@ -63,6 +81,70 @@ public class ProduitServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		doGet(request, response);
+		String action = request.getParameter("action");
+
+		if (action != null) {
+			switch (action) {
+				case "create":
+					createProduct(request, response);
+					break;
+				case "update":
+					updateProduct(request, response);
+					break;
+				case "delete":
+					deleteProduct(request, response);
+					break;
+				default:
+					doGet(request, response);
+			}
+		} else {
+			doGet(request, response);
+		}
+	}
+
+	private void createProduct(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String nom = request.getParameter("nom");
+		String description = request.getParameter("description");
+		double prix = Double.parseDouble(request.getParameter("prix"));
+		int stock = Integer.parseInt(request.getParameter("stock"));
+
+		Produit newProduct = new Produit();
+		newProduct.setNom(nom);
+		newProduct.setDescription(description);
+		newProduct.setPrix(prix);
+		newProduct.setStock(stock);
+
+
+		 produitser.createProduit(newProduct);
+		 
+	 response.sendRedirect(request.getContextPath() + "/ProduitServlet");
+	}
+
+	private void updateProduct(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Long id = (long) Integer.parseInt(request.getParameter("id"));
+		String nom = request.getParameter("nom");
+		String description = request.getParameter("description");
+		double prix = Double.parseDouble(request.getParameter("prix"));
+		int stock = Integer.parseInt(request.getParameter("stock"));
+
+		Produit updatedProduct =new Produit();
+		updatedProduct.setId(id);
+		updatedProduct.setNom(nom);
+		updatedProduct.setDescription(description);
+		updatedProduct.setPrix(prix);
+		updatedProduct.setStock(stock);
+	produitser.updateProduit(updatedProduct);
+
+		response.sendRedirect(request.getContextPath() + "/ProduitServlet");
+	}
+
+	private void deleteProduct(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Long id = (long) Integer.parseInt(request.getParameter("id"));
+	produitser.deleteProduit(id);
+
+		response.sendRedirect(request.getContextPath() + "/ProduitServlet");
 	}
 }

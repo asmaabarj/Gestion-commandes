@@ -23,7 +23,7 @@ public ProduitServices() {
 
 
 
-public  void create(Produit entity) {
+public  void createProduit(Produit entity) {
 	ProduitImpl.create(entity);
 }
 
@@ -32,21 +32,21 @@ public  void create(Produit entity) {
 
  }
 
-   void update(Produit entity){
+ public  void updateProduit(Produit entity){
 	   ProduitImpl.update(entity);
 
    }
 
-   void delete(Long id){
+  public void deleteProduit(Long id){
 	   ProduitImpl.delete(id);
 
    }
 
-    public List<Produit> getAll(){
+    public List<Produit> getAll(String nom){
     	  List<Produit> p = ProduitImpl.getAll();
-    	/*  if (nom != null && !nom.isEmpty()) {
+    	  if (nom != null && !nom.isEmpty()) {
     	   		return p.stream().filter(produit -> produit.getNom().toLowerCase().contains(nom.toLowerCase())).collect(Collectors.toList());
-    	   	}*/
+    	   	}
     	   	return p;
     }
   public List<Produit> getPage(int page,int pageSize){
