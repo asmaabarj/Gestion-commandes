@@ -14,393 +14,401 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
     />
   </head>
-  <body class="container mx-auto px-4 py-8" x-data="productApp()">
-    <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">
-      Liste des Produits
-    </h1>
+  <body>
+    <main class="container mx-auto px-4 py-8" x-data="productApp()">
+      <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">
+        Liste des Produits
+      </h1>
 
-    <div class="flex justify-between items-center mb-6">
-      <button
-        @click="showCreateModal = true"
-        class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110"
-      >
-        <i class="fas fa-plus mr-2"></i> Créer un produit
-      </button>
-
-      <form  action="" method="get" class="flex items-center">
-            <input type="text" name="search" value="" placeholder="Rechercher un Produit..." 
-        class="px-4 py-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
-        />
+      <div class="flex justify-between items-center mb-6">
         <button
-          type="submit"
-          class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r-lg transition duration-300 ease-in-out"
+          @click="showCreateModal = true"
+          class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110"
         >
-          <i class="fas fa-search mr-2"></i> Rechercher
+          <i class="fas fa-plus mr-2"></i> Créer un produit
         </button>
-      </form>
-          <a href="./ProduitServlet" 
-        class="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-orange-600 focus:ring-offset-2">
-      Tous les Produit
-    </a>
-    </div>
 
-    <div class="overflow-x-auto bg-white shadow-md rounded-lg">
-      <table class="min-w-full table-auto">
-        <thead class="bg-blue-300">
-          <tr>
-            <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+        <form action="" method="get" class="flex items-center">
+          <input
+            type="text"
+            name="search"
+            value=""
+            placeholder="Rechercher un Produit..."
+            class="px-4 py-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-300"
+          />
+          <button
+            type="submit"
+            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-r-lg transition duration-300 ease-in-out"
+          >
+            <i class="fas fa-search mr-2"></i> Rechercher
+          </button>
+        </form>
+        <a
+          href="./ProduitServlet"
+          class="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-orange-600 focus:ring-offset-2"
+        >
+          Tous les Produit
+        </a>
+      </div>
+
+      <div class="overflow-x-auto bg-white shadow-md rounded-lg">
+        <table class="min-w-full table-auto">
+          <thead class="bg-blue-300">
+            <tr>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+              >
+                Nom
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+              >
+                Description
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+              >
+                Prix
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+              >
+                Stock
+              </th>
+              <th
+                class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+              >
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200">
+            <tr th:each="produit : ${produits}" class="hover:bg-blue-100">
+              <td
+                class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                th:text="${produit.nom}"
+              ></td>
+              <td
+                class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                th:text="${produit.description}"
+              ></td>
+              <td
+                class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                th:text="${produit.prix + ' €'}"
+              ></td>
+              <td
+                class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
+                th:text="${produit.stock}"
+              ></td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                <div class="flex space-x-2">
+                  <button
+                    @click="openUpdateModal($event)"
+                    th:data-id="${produit.id}"
+                    th:data-nom="${produit.nom}"
+                    th:data-description="${produit.description}"
+                    th:data-prix="${produit.prix}"
+                    th:data-stock="${produit.stock}"
+                    class="text-white hover:text-white bg-indigo-500 hover:bg-indigo-200 p-2 rounded-full transition duration-300 ease-in-out"
+                  >
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <button
+                    @click="openDeleteModal($event)"
+                    th:data-id="${produit.id}"
+                    th:data-nom="${produit.nom}"
+                    class="text-white hover:text-white bg-red-500 hover:bg-red-200 p-2 rounded-full transition duration-300 ease-in-out"
+                  >
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="mt-6 flex justify-center items-center space-x-2">
+        <!-- Bouton précédent -->
+        <a
+          th:href="@{/ProduitServlet(page=${currentPage - 1})}"
+          th:class="${currentPage == 1} ? 'cursor-not-allowed opacity-50' : 'hover:bg-blue-600'"
+          class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out"
+        >
+          <i class="fas fa-chevron-left"></i>
+        </a>
+
+        <!-- Numéros de page -->
+        <div class="flex space-x-3">
+          <th:block th:each="pageNum : ${#numbers.sequence(1, totalPages)}">
+            <a
+              th:if="${pageNum == 1 || pageNum == totalPages || (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)}"
+              th:href="@{/ProduitServlet(page=${pageNum})}"
+              th:text="${pageNum}"
+              th:class="${pageNum == currentPage} ? 'bg-blue-600 text-white' : 'bg-white text-blue-600 hover:bg-blue-100'"
+              class="px-4 py-4 font-semibold rounded-lg shadow-md transition duration-300 ease-in-out"
             >
-              Nom
-            </th>
-            <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
+            </a>
+            <span
+              th:if="${pageNum == currentPage - 2 || pageNum == currentPage + 2}"
+              class="px-2 py-1 text-gray-500"
+              >...</span
             >
-              Description
-            </th>
-            <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
-            >
-              Prix
-            </th>
-            <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
-            >
-              Stock
-            </th>
-            <th
-              class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider"
-            >
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200">
-          <tr th:each="produit : ${produits}" class="hover:bg-blue-100">
-            <td
-              class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
-              th:text="${produit.nom}"
-            ></td>
-            <td
-              class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
-              th:text="${produit.description}"
-            ></td>
-            <td
-              class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
-              th:text="${produit.prix + ' €'}"
-            ></td>
-            <td
-              class="px-6 py-4 whitespace-nowrap text-sm text-gray-900"
-              th:text="${produit.stock}"
-            ></td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-              <div class="flex space-x-2">
+          </th:block>
+        </div>
+
+        <!-- Bouton suivant -->
+        <a
+          th:href="@{/ProduitServlet(page=${currentPage + 1})}"
+          th:class="${currentPage == totalPages} ? 'cursor-not-allowed opacity-50' : 'hover:bg-blue-600'"
+          class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out"
+        >
+          <i class="fas fa-chevron-right"></i>
+        </a>
+      </div>
+
+      <!-- Modal de création -->
+      <div
+        x-show="showCreateModal"
+        class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+        x-cloak
+      >
+        <div
+          class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white"
+        >
+          <div class="mt-3 text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+              Créer un nouveau produit
+            </h3>
+            <form id="createForm" action="" method="post">
+              <input type="hidden" name="action" value="create" />
+              <div class="mt-2 px-7 py-3">
+                <div class="mb-3">
+                  <label
+                    for="create-nom"
+                    class="block text-sm font-medium text-gray-700 text-left mb-1"
+                    >Nom</label
+                  >
+                  <input
+                    id="create-nom"
+                    type="text"
+                    name="nom"
+                    class="px-3 py-2 border rounded-lg w-full"
+                    placeholder="Nom du produit"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label
+                    for="create-description"
+                    class="block text-sm font-medium text-gray-700 text-left mb-1"
+                    >Description</label
+                  >
+                  <textarea
+                    id="create-description"
+                    name="description"
+                    class="px-3 py-2 border rounded-lg w-full"
+                    placeholder="Description du produit"
+                    rows="3"
+                  ></textarea>
+                </div>
+                <div class="mb-3">
+                  <label
+                    for="create-prix"
+                    class="block text-sm font-medium text-gray-700 text-left mb-1"
+                    >Prix</label
+                  >
+                  <input
+                    id="create-prix"
+                    type="number"
+                    name="prix"
+                    class="px-3 py-2 border rounded-lg w-full"
+                    placeholder="Prix"
+                    step="0.01"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label
+                    for="create-stock"
+                    class="block text-sm font-medium text-gray-700 text-left mb-1"
+                    >Stock</label
+                  >
+                  <input
+                    id="create-stock"
+                    type="number"
+                    name="stock"
+                    class="px-3 py-2 border rounded-lg w-full"
+                    placeholder="Stock"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="items-center px-4 py-3">
                 <button
-                  @click="openUpdateModal($event)"
-                  th:data-id="${produit.id}"
-                  th:data-nom="${produit.nom}"
-                  th:data-description="${produit.description}"
-                  th:data-prix="${produit.prix}"
-                  th:data-stock="${produit.stock}"
-                  class="text-white hover:text-white bg-indigo-500 hover:bg-indigo-200 p-2 rounded-full transition duration-300 ease-in-out"
+                  type="button"
+                  @click="showCreateModal = false"
+                  class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300"
                 >
-                  <i class="fas fa-edit"></i>
+                  Annuler
                 </button>
                 <button
-                  @click="openDeleteModal($event)"
-                  th:data-id="${produit.id}"
-                  th:data-nom="${produit.nom}"
-                  class="text-white hover:text-white bg-red-500 hover:bg-red-200 p-2 rounded-full transition duration-300 ease-in-out"
+                  type="submit"
+                  class="mt-3 px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
                 >
-                  <i class="fas fa-trash-alt"></i>
+                  Créer
                 </button>
               </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Pagination -->
-    <div class="mt-6 flex justify-center items-center space-x-2">
-      <!-- Bouton précédent -->
-      <a
-        th:href="@{/ProduitServlet(page=${currentPage - 1})}"
-        th:class="${currentPage == 1} ? 'cursor-not-allowed opacity-50' : 'hover:bg-blue-600'"
-        class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out"
-      >
-        <i class="fas fa-chevron-left"></i>
-      </a>
-
-      <!-- Numéros de page -->
-      <div class="flex space-x-3">
-        <th:block th:each="pageNum : ${#numbers.sequence(1, totalPages)}">
-          <a
-            th:if="${pageNum == 1 || pageNum == totalPages || (pageNum >= currentPage - 1 && pageNum <= currentPage + 1)}"
-            th:href="@{/ProduitServlet(page=${pageNum})}"
-            th:text="${pageNum}"
-            th:class="${pageNum == currentPage} ? 'bg-blue-600 text-white' : 'bg-white text-blue-600 hover:bg-blue-100'"
-            class="px-4 py-4 font-semibold rounded-lg shadow-md transition duration-300 ease-in-out"
-          >
-          </a>
-          <span
-            th:if="${pageNum == currentPage - 2 || pageNum == currentPage + 2}"
-            class="px-2 py-1 text-gray-500"
-            >...</span
-          >
-        </th:block>
-      </div>
-
-      <!-- Bouton suivant -->
-      <a
-        th:href="@{/ProduitServlet(page=${currentPage + 1})}"
-        th:class="${currentPage == totalPages} ? 'cursor-not-allowed opacity-50' : 'hover:bg-blue-600'"
-        class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out"
-      >
-        <i class="fas fa-chevron-right"></i>
-      </a>
-    </div>
-
-    <!-- Modal de création -->
-    <div
-      x-show="showCreateModal"
-      class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
-      x-cloak
-    >
-      <div
-        class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white"
-      >
-        <div class="mt-3 text-center">
-          <h3 class="text-lg leading-6 font-medium text-gray-900">
-            Créer un nouveau produit
-          </h3>
-          <form id="createForm" action="" method="post">
-            <input type="hidden" name="action" value="create" />
-            <div class="mt-2 px-7 py-3">
-              <div class="mb-3">
-                <label
-                  for="create-nom"
-                  class="block text-sm font-medium text-gray-700 text-left mb-1"
-                  >Nom</label
-                >
-                <input
-                  id="create-nom"
-                  type="text"
-                  name="nom"
-                  class="px-3 py-2 border rounded-lg w-full"
-                  placeholder="Nom du produit"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label
-                  for="create-description"
-                  class="block text-sm font-medium text-gray-700 text-left mb-1"
-                  >Description</label
-                >
-                <textarea
-                  id="create-description"
-                  name="description"
-                  class="px-3 py-2 border rounded-lg w-full"
-                  placeholder="Description du produit"
-                  rows="3"
-                ></textarea>
-              </div>
-              <div class="mb-3">
-                <label
-                  for="create-prix"
-                  class="block text-sm font-medium text-gray-700 text-left mb-1"
-                  >Prix</label
-                >
-                <input
-                  id="create-prix"
-                  type="number"
-                  name="prix"
-                  class="px-3 py-2 border rounded-lg w-full"
-                  placeholder="Prix"
-                  step="0.01"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label
-                  for="create-stock"
-                  class="block text-sm font-medium text-gray-700 text-left mb-1"
-                  >Stock</label
-                >
-                <input
-                  id="create-stock"
-                  type="number"
-                  name="stock"
-                  class="px-3 py-2 border rounded-lg w-full"
-                  placeholder="Stock"
-                  required
-                />
-              </div>
-            </div>
-            <div class="items-center px-4 py-3">
-              <button
-                type="button"
-                @click="showCreateModal = false"
-                class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300"
-              >
-                Annuler
-              </button>
-              <button
-                type="submit"
-                class="mt-3 px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
-              >
-                Créer
-              </button>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Modal de mise à jour -->
-    <div
-      x-show="showUpdateModal"
-      class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
-      x-cloak
-    >
+      <!-- Modal de mise à jour -->
       <div
-        class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white"
+        x-show="showUpdateModal"
+        class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+        x-cloak
       >
-        <div class="mt-3 text-center">
-          <h3 class="text-lg leading-6 font-medium text-gray-900">
-            Mettre à jour le produit
-          </h3>
-          <form id="updateForm" action="" method="post">
-            <input type="hidden" name="action" value="update" />
-            <input type="hidden" name="id" :value="currentProduct.id" />
-            <div class="mt-2 px-7 py-3">
-              <div class="mb-3">
-                <label
-                  for="update-nom"
-                  class="block text-sm font-medium text-gray-700 text-left mb-1"
-                  >Nom</label
-                >
-                <input
-                  id="update-nom"
-                  type="text"
-                  name="nom"
-                  :value="currentProduct.nom"
-                  class="px-3 py-2 border rounded-lg w-full"
-                  required
-                />
+        <div
+          class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white"
+        >
+          <div class="mt-3 text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+              Mettre à jour le produit
+            </h3>
+            <form id="updateForm" action="" method="post">
+              <input type="hidden" name="action" value="update" />
+              <input type="hidden" name="id" :value="currentProduct.id" />
+              <div class="mt-2 px-7 py-3">
+                <div class="mb-3">
+                  <label
+                    for="update-nom"
+                    class="block text-sm font-medium text-gray-700 text-left mb-1"
+                    >Nom</label
+                  >
+                  <input
+                    id="update-nom"
+                    type="text"
+                    name="nom"
+                    :value="currentProduct.nom"
+                    class="px-3 py-2 border rounded-lg w-full"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label
+                    for="update-description"
+                    class="block text-sm font-medium text-gray-700 text-left mb-1"
+                    >Description</label
+                  >
+                  <textarea
+                    id="update-description"
+                    name="description"
+                    class="px-3 py-2 border rounded-lg w-full"
+                    rows="3"
+                    x-text="currentProduct.description"
+                  ></textarea>
+                </div>
+                <div class="mb-3">
+                  <label
+                    for="update-prix"
+                    class="block text-sm font-medium text-gray-700 text-left mb-1"
+                    >Prix</label
+                  >
+                  <input
+                    id="update-prix"
+                    type="number"
+                    name="prix"
+                    :value="currentProduct.prix"
+                    class="px-3 py-2 border rounded-lg w-full"
+                    step="0.01"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label
+                    for="update-stock"
+                    class="block text-sm font-medium text-gray-700 text-left mb-1"
+                    >Stock</label
+                  >
+                  <input
+                    id="update-stock"
+                    type="number"
+                    name="stock"
+                    :value="currentProduct.stock"
+                    class="px-3 py-2 border rounded-lg w-full"
+                    required
+                  />
+                </div>
               </div>
-              <div class="mb-3">
-                <label
-                  for="update-description"
-                  class="block text-sm font-medium text-gray-700 text-left mb-1"
-                  >Description</label
+              <div class="items-center px-4 py-3">
+                <button
+                  type="button"
+                  @click="showUpdateModal = false"
+                  class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300"
                 >
-                <textarea
-                  id="update-description"
-                  name="description"
-                  class="px-3 py-2 border rounded-lg w-full"
-                  rows="3"
-                  x-text="currentProduct.description"
-                ></textarea>
-              </div>
-              <div class="mb-3">
-                <label
-                  for="update-prix"
-                  class="block text-sm font-medium text-gray-700 text-left mb-1"
-                  >Prix</label
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  class="mt-3 px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
                 >
-                <input
-                  id="update-prix"
-                  type="number"
-                  name="prix"
-                  :value="currentProduct.prix"
-                  class="px-3 py-2 border rounded-lg w-full"
-                  step="0.01"
-                  required
-                />
+                  Mettre à jour
+                </button>
               </div>
-              <div class="mb-3">
-                <label
-                  for="update-stock"
-                  class="block text-sm font-medium text-gray-700 text-left mb-1"
-                  >Stock</label
-                >
-                <input
-                  id="update-stock"
-                  type="number"
-                  name="stock"
-                  :value="currentProduct.stock"
-                  class="px-3 py-2 border rounded-lg w-full"
-                  required
-                />
-              </div>
-            </div>
-            <div class="items-center px-4 py-3">
-              <button
-                type="button"
-                @click="showUpdateModal = false"
-                class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300"
-              >
-                Annuler
-              </button>
-              <button
-                type="submit"
-                class="mt-3 px-4 py-2 bg-blue-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300"
-              >
-                Mettre à jour
-              </button>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- Modal de confirmation de suppression -->
-    <div
-      x-show="showDeleteModal"
-      class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
-      x-cloak
-    >
+      <!-- Modal de confirmation de suppression -->
       <div
-        class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white"
+        x-show="showDeleteModal"
+        class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
+        x-cloak
       >
-        <div class="mt-3 text-center">
-          <h3 class="text-lg leading-6 font-medium text-gray-900">
-            Confirmer la suppression
-          </h3>
-          <form id="deleteForm" action="" method="post">
-           <input type="hidden" name="action" value="delete" />
-            <div class="mt-2 px-7 py-3">
-              <input type="hidden" x-model="currentProduct.id" name="id" />
-              <p class="text-sm text-gray-500">
-                Êtes-vous sûr de vouloir supprimer le produit "<span
-                  x-text="currentProduct.nom"
-                ></span
-                >" ?
-              </p>
-            </div>
-            <div class="items-center px-4 py-3">
-              <button
-                type="button"
-                @click="showDeleteModal = false"
-                class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300"
-              >
-                Annuler
-              </button>
-              <button
-                type="submit"
-                class="mt-3 px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300"
-              >
-                Supprimer
-              </button>
-            </div>
-          </form>
+        <div
+          class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white"
+        >
+          <div class="mt-3 text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">
+              Confirmer la suppression
+            </h3>
+            <form id="deleteForm" action="" method="post">
+              <input type="hidden" name="action" value="delete" />
+              <div class="mt-2 px-7 py-3">
+                <input type="hidden" x-model="currentProduct.id" name="id" />
+                <p class="text-sm text-gray-500">
+                  Êtes-vous sûr de vouloir supprimer le produit "<span
+                    x-text="currentProduct.nom"
+                  ></span
+                  >" ?
+                </p>
+              </div>
+              <div class="items-center px-4 py-3">
+                <button
+                  type="button"
+                  @click="showDeleteModal = false"
+                  class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300"
+                >
+                  Annuler
+                </button>
+                <button
+                  type="submit"
+                  class="mt-3 px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300"
+                >
+                  Supprimer
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </main>
 
-    <script>
+    <script th:inline="javascript">
       function productApp() {
         return {
           showCreateModal: false,
