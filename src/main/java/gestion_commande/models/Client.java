@@ -15,8 +15,9 @@ public class Client extends Utilisateur {
 
     public Client() {
         super();
-        setRole(Role.Client);
+        setRole(Role.Client); 
     }
+
 
     public String getAdresseLivraison() {
         return adresseLivraison;

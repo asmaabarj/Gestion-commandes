@@ -19,4 +19,34 @@
     <servlet-name>ProduitServlet</servlet-name>
     <url-pattern>/ProduitServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>UtilisateurServlet</display-name>
+    <servlet-name>UtilisateurServlet</servlet-name>
+    <servlet-class>gestion_commande.controllers.UtilisateurServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>UtilisateurServlet</servlet-name>
+    <url-pattern>/UtilisateurServlet</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>ClientServlet</display-name>
+    <servlet-name>ClientServlet</servlet-name>
+    <servlet-class>gestion_commande.controllers.ClientServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ClientServlet</servlet-name>
+    <url-pattern>/clients</url-pattern>
+  </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>AdminServlet</display-name>
+    <servlet-name>AdminServlet</servlet-name>
+    <servlet-class>gestion_commande.controllers.AdminServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AdminServlet</servlet-name>
+    <url-pattern>/admins</url-pattern>
+  </servlet-mapping>
 </web-app>
