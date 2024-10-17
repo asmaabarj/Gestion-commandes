@@ -15,6 +15,7 @@ public class Admin extends Utilisateur {
         setRole(Role.Admin);
     }
 
+    
     public Integer getNiveauAcces() {
         return niveauAcces;
     }
@@ -23,7 +24,8 @@ public class Admin extends Utilisateur {
         this.niveauAcces = niveauAcces;
     }
 
-    @Override
+	
+	@Override
     public String toString() {
         return "Admin{" +
                 "id=" + getId() +
@@ -34,4 +36,6 @@ public class Admin extends Utilisateur {
                 ", niveauAcces=" + niveauAcces +
                 '}';
     }
+
+   
 }

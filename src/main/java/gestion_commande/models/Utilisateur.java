@@ -35,8 +35,13 @@ public abstract class Utilisateur {
 
     
     public Utilisateur() {
-		// TODO Auto-generated constructor stub
 	}
+    
+    public Utilisateur(String nom, String prenom, String email) {
+        this.nom = nom;
+        this.prenom = prenom;
+        this.email = email;
+    }
     
     public Long getId() {
 		return id;
