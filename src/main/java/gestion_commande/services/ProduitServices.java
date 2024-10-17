@@ -8,7 +8,9 @@ import java.util.stream.Collectors;
 
 import gestion_commande.models.Produit;
 import gestion_commande.repo.ProduitImpl;
-
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import java.util.Set;
 
 
 
@@ -32,7 +34,7 @@ public  void createProduit(Produit entity) {
 
  }
 
- public  void updateProduit(Produit entity){
+ public  void updateProduit(Produit entity)  {
 	   ProduitImpl.update(entity);
 
    }
@@ -59,4 +61,10 @@ public  void createProduit(Produit entity) {
   }
   
 
+public String getValidationErrors(ConstraintViolationException e) {
+    Set<ConstraintViolation<?>> violations = e.getConstraintViolations();
+    return violations.stream()
+            .map(ConstraintViolation::getMessage)
+            .collect(Collectors.joining(", "));
+}
 }
