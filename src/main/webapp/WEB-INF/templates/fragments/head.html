@@ -12,6 +12,6 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
     />
-       <title layout:title-pattern="$CONTENT_TITLE - Gestion de commande">Gestion de commande</title>
+    <title th:text="'Ligne | ' + (${title} ?: 'Gestion de commande')"></title>
    </head>
 </html>
