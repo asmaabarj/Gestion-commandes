@@ -1,0 +1,47 @@
+<header th:fragment="header" class="bg-blue-600 shadow-md">
+  <nav class="container mx-auto px-6 py-3">
+    <div class="flex items-center justify-between">
+      <div class="text-white font-bold text-xl">Gestion de Commande</div>
+      <div class="hidden md:flex items-center space-x-4">
+        <a
+          href="/ProduitServlet"
+          th:href="@{/ProduitServlet}"
+          class="text-white hover:text-blue-200 transition duration-300"
+          >Produits</a
+        >
+        <a
+          href="#"
+          class="text-white hover:text-blue-200 transition duration-300 uppercase"
+          >Commandes</a
+        >
+        <a
+          href="#"
+          class="text-white hover:text-blue-200 transition duration-300 uppercase"
+          >Clients</a
+        >
+      </div>
+      <div class="md:hidden">
+        <button class="text-white focus:outline-none">
+          <svg class="h-6 w-6 fill-current" viewBox="0 0 24 24">
+            <path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+  <div class="md:hidden">
+    <a
+      href="/ProduitServlet"
+      th:href="@{/ProduitServlet}"
+      class="block py-2 px-4 text-sm hover:bg-blue-700 text-white"
+      >Produits</a
+    >
+    <a href="#" class="block py-2 px-4 text-sm hover:bg-blue-700 text-white"
+      >Commandes</a
+    >
+    <a href="#" class="block py-2 px-4 text-sm hover:bg-blue-700 text-white"
+      >Clients</a
+    >
+  </div>
+</header>
+

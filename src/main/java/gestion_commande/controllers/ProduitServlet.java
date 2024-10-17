@@ -11,10 +11,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
+import org.thymeleaf.dialect.IDialect;
+import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 
 import gestion_commande.models.Produit;
 import gestion_commande.services.ProduitServices;
-import gestion_commande.utilis.LoggerMessage;
 
 public class ProduitServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -36,6 +37,7 @@ public class ProduitServlet extends HttpServlet {
 		templateResolver.setTemplateMode("HTML");
 
 		templateEngine = new TemplateEngine();
+		templateEngine.addDialect(new LayoutDialect()); // Ajoutez cette ligne
 		templateEngine.addTemplateResolver(templateResolver);
 	}
 
@@ -63,7 +65,7 @@ public class ProduitServlet extends HttpServlet {
 			 totalPages = produits.size();
 		} else {
 			 produits = produitser.getPage(page, pageSize);
-				long totalProduits = produitser.countProduit();
+			 long totalProduits = produitser.countProduit();
 				 totalPages = (int) Math.ceil((double) totalProduits / pageSize);
 
 		}

@@ -16,17 +16,22 @@ public class Produit {
 
     @NotBlank(message = "Le nom du produit est obligatoire")
     @Size(max = 100, message = "Le nom du produit ne peut pas dépasser 100 caractères")
+    @Column(nullable = false, length = 100)
     private String nom;
-
+    
+    @NotBlank(message = "La description est obligatoire")
     @Size(max = 500, message = "La description ne peut pas dépasser 500 caractères")
+    @Column(nullable = false, length = 500)
     private String description;
 
     @NotNull(message = "Le prix est obligatoire")
     @Positive(message = "Le prix doit être positif")
+    @Column(nullable = false)
     private Double prix;
 
     @NotNull(message = "Le stock est obligatoire")
     @PositiveOrZero(message = "Le stock ne peut pas être négatif")
+    @Column(nullable = false)
     private Integer stock;
     
     @ManyToMany(mappedBy = "produits")
