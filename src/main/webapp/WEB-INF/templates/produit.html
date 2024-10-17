@@ -91,7 +91,6 @@
         </table>
     </div>
 
-    <!-- Pagination -->
     <div class="mt-6 flex justify-center items-center space-x-2">
         <div class="flex space-x-3">
             <th:block th:each="pageNum : ${#numbers.sequence(1, totalPages)}">
@@ -111,7 +110,6 @@
         </div>
     </div>
 
-    <!-- Modal de création -->
     <div
         x-show="showCreateModal"
         class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full"
