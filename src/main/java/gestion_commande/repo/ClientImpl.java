@@ -1,9 +1,11 @@
 package gestion_commande.repo;
 
 import gestion_commande.interfaces.GenerInerface;
+import gestion_commande.models.Admin;
 import gestion_commande.models.Client;
 import gestion_commande.utilis.EntityManagerUtil;
 import gestion_commande.utilis.LoggerMessage;
+import gestion_commande.utilis.PasswordUtil;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -12,26 +14,30 @@ import java.util.Optional;
 
 public class ClientImpl implements GenerInerface<Client, Long> {
 
-    @Override
-    public void create(Client entity) {
-        EntityManager em = EntityManagerUtil.getEntityManager();
-        EntityTransaction transaction = em.getTransaction();
+	@Override
+	public void create(Client entity) {
+	    EntityManager em = EntityManagerUtil.getEntityManager();
+	    EntityTransaction transaction = em.getTransaction();
 
-        try {
-            transaction.begin();
-            em.persist(entity); 
-            transaction.commit();
-            LoggerMessage.info("Client créé avec succès. ID: " + entity.getId());
-        } catch (Exception e) {
-            if (transaction.isActive()) {
-                transaction.rollback();
-            }
-            LoggerMessage.error("Erreur lors de la création du client: " + e.getMessage());
-            throw e;
-        } finally {
-            em.close();
-        }
-    }
+	    try {
+	        String hashedPassword = PasswordUtil.hashPassword(entity.getMotDePasse());
+	        entity.setMotDePasse(hashedPassword);
+	        
+	        transaction.begin();
+	        em.persist(entity); 
+	        transaction.commit();
+	        LoggerMessage.info("Client créé avec succès. ID: " + entity.getId());
+	    } catch (Exception e) {
+	        if (transaction.isActive()) {
+	            transaction.rollback();
+	        }
+	        LoggerMessage.error("Erreur lors de la création de client: " + e.getMessage());
+	        throw e;
+	    } finally {
+	        em.close();
+	    }
+	}
+
 
     @Override
     public Optional<Client> findById(Long id) {
@@ -53,6 +59,7 @@ public class ClientImpl implements GenerInerface<Client, Long> {
             transaction.begin();
             em.merge(entity); 
             transaction.commit();
+            LoggerMessage.info("Client mis à jour avec succès. ID: " + entity.getId());
         } catch (Exception e) {
             if (transaction.isActive()) {
                 transaction.rollback();
@@ -111,11 +118,11 @@ public class ClientImpl implements GenerInerface<Client, Long> {
     }
 
     @Override
-    public Integer count() {
+    public Long count() {
         EntityManager em = EntityManagerUtil.getEntityManager();
         try {
             Long count = (Long) em.createQuery("SELECT COUNT(c) FROM Client c").getSingleResult();
-            return count.intValue();
+            return (long) count.intValue();
         } finally {
             em.close();
         }

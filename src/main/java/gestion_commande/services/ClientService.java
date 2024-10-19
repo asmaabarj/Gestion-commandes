@@ -12,6 +12,10 @@ public class ClientService {
     public void create(Client client) {
         clientRepo.create(client);
     }
+        
+    public void update(Client client) {
+    	clientRepo.update(client);
+    }
     
     public Optional<Client> findById(Long id) {
         return clientRepo.findById(id);
@@ -29,7 +33,7 @@ public class ClientService {
         clientRepo.delete(id);
     }
     
-    public Integer count() {
+    public Long count() {
         return clientRepo.count();
     }
 }

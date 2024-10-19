@@ -2,6 +2,7 @@ package gestion_commande.controllers;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
@@ -15,6 +16,8 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import gestion_commande.models.Client;
 import gestion_commande.services.ClientService;
+import gestion_commande.utilis.PasswordUtil;
+import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 
 public class ClientServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -36,7 +39,8 @@ public class ClientServlet extends HttpServlet {
         templateResolver.setTemplateMode("HTML");
 
         templateEngine = new TemplateEngine();
-        templateEngine.addTemplateResolver(templateResolver);
+		templateEngine.addDialect(new LayoutDialect());
+		templateEngine.addTemplateResolver(templateResolver);
     }
 
     @Override
@@ -49,7 +53,7 @@ public class ClientServlet extends HttpServlet {
         List<Client> clients = null;
         int totalPages = 0;
 
-        List<Client> allClients = clientServices.getAll(); // You need to implement this in your service
+        List<Client> allClients = clientServices.getAll(); 
 
         if (searchQuery != null && !searchQuery.trim().isEmpty()) {
             clients = allClients.stream()
@@ -70,6 +74,7 @@ public class ClientServlet extends HttpServlet {
         context.setVariable("currentPage", page);
         context.setVariable("totalPages", totalPages);
         context.setVariable("searchQuery", searchQuery); 
+		response.setContentType("text/html;charset=UTF-8");
         templateEngine.process("clients", context, response.getWriter());
     }
 
@@ -101,8 +106,37 @@ public class ClientServlet extends HttpServlet {
         	Long id = (long) Integer.parseInt(request.getParameter("clientId"));
         	clientServices.delete(id);
             response.sendRedirect(request.getContextPath() +"/clients");
+        }else if ("edit".equals(action)) {
+            Long id = Long.parseLong(request.getParameter("clientId"));
+            Optional<Client> optionalClient = clientServices.findById(id);
+            
+            if (optionalClient.isPresent()) {
+                Client client = optionalClient.get();
+
+                String nom = request.getParameter("nom");
+                String prenom = request.getParameter("prenom");
+                String email = request.getParameter("email");
+                String adresselivraison = request.getParameter("adresselivraison");
+                String moyenpaiement = request.getParameter("moyenpaiement");
+
+                client.setNom(nom);
+                client.setPrenom(prenom);
+                client.setEmail(email);
+                client.setAdresseLivraison(adresselivraison);
+                client.setMoyenPaiement(moyenpaiement);
+
+
+                String motpasse = request.getParameter("motpasse");
+                if (motpasse != null && !motpasse.isEmpty()) {
+                    String hashedPassword = PasswordUtil.hashPassword(motpasse);
+                    client.setMotDePasse(hashedPassword);
+                }
+
+                clientServices.update(client);
+            }
+
+            response.sendRedirect(request.getContextPath() + "/clients");
         }
-      
     }
 
 
