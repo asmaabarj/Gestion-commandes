@@ -13,6 +13,10 @@ public class AdminService {
         adminRepo.create(admin);
     }
     
+    public void update(Admin admin) {
+        adminRepo.update(admin);
+    }
+    
     public Optional<Admin> findById(Long id) {
         return adminRepo.findById(id);
     }
@@ -29,7 +33,7 @@ public class AdminService {
     	adminRepo.delete(id);
     }
     
-    public Integer count() {
+    public Long count() {
         return adminRepo.count();
     }
 }
