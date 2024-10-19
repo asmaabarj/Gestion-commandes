@@ -127,4 +127,20 @@ public class AdminImpl implements GenerInerface<Admin, Long> {
             em.close();
         }
     }
+    
+    public Optional<Admin> findByEmail(String email) {
+        EntityManager em = EntityManagerUtil.getEntityManager(); 
+        try {
+            Admin admin = em.createQuery("SELECT a FROM Admin a WHERE a.email = :email", Admin.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+            return Optional.ofNullable(admin);
+        } catch (Exception e) {
+            LoggerMessage.error("Erreur lors de la recherche de l'admin par email: " + e.getMessage());
+            return Optional.empty();
+        } finally {
+            em.close(); 
+        }
+    }
+
 }

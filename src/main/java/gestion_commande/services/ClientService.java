@@ -1,5 +1,6 @@
 package gestion_commande.services;
 
+import gestion_commande.models.Admin;
 import gestion_commande.models.Client;
 import gestion_commande.repo.ClientImpl;
 import java.util.List;
@@ -35,5 +36,8 @@ public class ClientService {
     
     public Long count() {
         return clientRepo.count();
+    }
+    public Optional<Client> findByEmail(String email) {
+        return clientRepo.findByEmail(email);
     }
 }

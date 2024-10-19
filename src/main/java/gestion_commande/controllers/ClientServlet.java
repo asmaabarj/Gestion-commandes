@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
@@ -34,6 +35,7 @@ public class ClientServlet extends HttpServlet {
     public void init() throws ServletException {
         super.init();
         ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(getServletContext());
+        
         templateResolver.setPrefix("/WEB-INF/templates/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode("HTML");
@@ -46,6 +48,13 @@ public class ClientServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	HttpSession session = request.getSession(false);
+	    if (session == null || session.getAttribute("admin") == null) {
+	        response.sendRedirect(request.getContextPath() + "/login");
+	        return;
+	    }
+	    
         String searchQuery = request.getParameter("search");
         String pageStr = request.getParameter("page");
         int page = (pageStr != null) ? Integer.parseInt(pageStr) : 1;
