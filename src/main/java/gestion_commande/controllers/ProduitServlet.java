@@ -2,11 +2,13 @@ package gestion_commande.controllers;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
@@ -15,13 +17,17 @@ import org.thymeleaf.context.WebContext;
 
 import gestion_commande.models.Produit;
 import gestion_commande.services.ProduitServices;
+import gestion_commande.utilis.LoggerMessage;
 import gestion_commande.utilis.TemplateEngineUtil;
+import gestion_commande.utilis.ValidationUtil;
 
 public class ProduitServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	private ProduitServices produitser;
 	private TemplateEngine templateEngine;
+  
+
 
 	public ProduitServlet() {
 		super();
@@ -33,6 +39,7 @@ public class ProduitServlet extends HttpServlet {
 		super.init();
 	    templateEngine = TemplateEngineUtil.getTemplateEngine(getServletContext());
 
+ 
 	}
 
 	/**
@@ -75,7 +82,7 @@ public class ProduitServlet extends HttpServlet {
 		context.setVariable("produits", produits);
 		context.setVariable("currentPage", page);
 		context.setVariable("totalPages", totalPages);
-
+		context.setVariable("title", "Produit");
 		response.setContentType("text/html;charset=UTF-8");
 		templateEngine.process("produit", context, response.getWriter());
 	}
@@ -107,66 +114,91 @@ public class ProduitServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String nom = request.getParameter("nom");
 		String description = request.getParameter("description");
-		double prix = Double.parseDouble(request.getParameter("prix"));
-		int stock = Integer.parseInt(request.getParameter("stock"));
+		double prix;
+		int stock;
 
-	    if (description.isEmpty() ||nom.isEmpty()) {
-            request.setAttribute("errorMessage", "La champ du input est obligatoire.");
-            doGet(request, response);
-            return;
-        }
-        if(prix<0 || stock<0){
-            request.setAttribute("errorMessage", "La champ du input >=0 est obligatoire.");
-            doGet(request, response);
-            return;
-        }
-        
+
+		try {
+			prix = Double.parseDouble(request.getParameter("prix"));
+			stock = Integer.parseInt(request.getParameter("stock"));
+		} catch (NumberFormatException e) {
+			request.setAttribute("errorMessage", "Prix et stock doivent être des nombres valides.");
+			doGet(request, response);
+			return;
+		}
+
+		if (prix < 0 || stock < 0) {
+			request.setAttribute("errorMessage", "Le prix et le stock doivent être supérieurs ou égaux à zéro.");
+			doGet(request, response);
+			return;
+		}
+
 		Produit newProduct = new Produit();
 		newProduct.setNom(nom);
 		newProduct.setDescription(description);
 		newProduct.setPrix(prix);
 		newProduct.setStock(stock);
 
+		Map<String, String> errors = ValidationUtil.getInstance().validate(newProduct);
 
-		 produitser.createProduit(newProduct);
-		 
-	 response.sendRedirect(request.getContextPath() + "/ProduitServlet");
+		if (!errors.isEmpty()) {
+			LoggerMessage.info("Validation errors: " + errors);
+			request.setAttribute("errorMessage", errors);
+			doGet(request, response);
+			return;
+		}
+
+		produitser.createProduit(newProduct);
+		response.sendRedirect(request.getContextPath() + "/ProduitServlet");
 	}
 
 	private void updateProduct(HttpServletRequest request, HttpServletResponse response)
-	        throws ServletException, IOException {
-	    try {
-	        Long id = Long.parseLong(request.getParameter("id"));
-	        String nom = request.getParameter("nom");
-	        String description = request.getParameter("description");
-	        double prix = Double.parseDouble(request.getParameter("prix"));
-	        int stock = Integer.parseInt(request.getParameter("stock"));
+			throws ServletException, IOException {
+		try {
+			Long id = Long.parseLong(request.getParameter("id"));
+			String nom = request.getParameter("nom");
+			String description = request.getParameter("description");
+			double prix;
+			int stock;
 
-	        if (description.isEmpty() ||nom.isEmpty()) {
-	            request.setAttribute("errorMessage", "La champ du input est obligatoire.");
-	            doGet(request, response);
-	            return;
-	        }
-	        if(prix<0 || stock<0){
-	            request.setAttribute("errorMessage", "La champ du input >=0 est obligatoire.");
-	            doGet(request, response);
-	            return;
-	        }
+			if (nom == null || nom.isEmpty() || description == null || description.isEmpty()) {
+				request.setAttribute("errorMessage", "Le nom et la description sont obligatoires.");
+				doGet(request, response);
+				return;
+			}
 
-	        Produit updatedProduct = new Produit();
-	        updatedProduct.setId(id);
-	        updatedProduct.setNom(nom);
-	        updatedProduct.setDescription(description);
-	        updatedProduct.setPrix(prix);
-	        updatedProduct.setStock(stock);
+			prix = Double.parseDouble(request.getParameter("prix"));
+			stock = Integer.parseInt(request.getParameter("stock"));
 
-	        produitser.updateProduit(updatedProduct);
-	        response.sendRedirect(request.getContextPath() + "/ProduitServlet");
+			if (prix < 0 || stock < 0) {
+				request.setAttribute("errorMessage", "Le prix et le stock doivent être supérieurs ou égaux à zéro.");
+				doGet(request, response);
+				return;
+			}
 
-	    } catch (NumberFormatException e) {
-	        request.setAttribute("errorMessage", "Format de données incorrect. Veuillez réessayer.");
-	        doGet(request, response);
-	    }
+			Produit updatedProduct = new Produit();
+			updatedProduct.setId(id);
+			updatedProduct.setNom(nom);
+			updatedProduct.setDescription(description);
+			updatedProduct.setPrix(prix);
+			updatedProduct.setStock(stock);
+
+			Map<String, String> errors = ValidationUtil.getInstance().validate(updatedProduct);
+
+			if (!errors.isEmpty()) {
+				LoggerMessage.info("Validation errors: " + errors);
+				request.setAttribute("errorMessage", errors);
+				doGet(request, response);
+				return;
+			}
+
+			produitser.updateProduit(updatedProduct);
+			response.sendRedirect(request.getContextPath() + "/ProduitServlet");
+
+		} catch (NumberFormatException e) {
+			request.setAttribute("errorMessage", "Format de données incorrect. Veuillez réessayer.");
+			doGet(request, response);
+		}
 	}
 
 
