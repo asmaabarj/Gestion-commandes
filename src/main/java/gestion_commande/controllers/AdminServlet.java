@@ -102,13 +102,11 @@ public class AdminServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath() + "/admins");
 
         } else if ("delete".equals(action)) {
-            // Delete logic (unchanged)
             Long id = Long.parseLong(request.getParameter("adminId"));
             adminServices.delete(id);
             response.sendRedirect(request.getContextPath() + "/admins");
 
         } else if ("edit".equals(action)) {
-            // Edit logic
             Long id = Long.parseLong(request.getParameter("adminId"));
             Optional<Admin> optionalAdmin = adminServices.findById(id);
             
@@ -128,7 +126,6 @@ public class AdminServlet extends HttpServlet {
 
                 String motpasse = request.getParameter("motpasse");
                 if (motpasse != null && !motpasse.isEmpty()) {
-                    // Hash the new password and update
                     String hashedPassword = PasswordUtil.hashPassword(motpasse);
                     admin.setMotDePasse(hashedPassword);
                 }
