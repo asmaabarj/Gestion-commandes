@@ -1,24 +1,18 @@
 package gestion_commande.controllers;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.logging.LogManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
+
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
 
-import javax.validation.ConstraintViolation;
 
 import gestion_commande.models.Produit;
 import gestion_commande.services.ProduitServices;
@@ -31,7 +25,6 @@ public class ProduitServlet extends HttpServlet {
 
 	private ProduitServices produitser;
 	private TemplateEngine templateEngine;
-    private Validator validator;
 
 
 	public ProduitServlet() {
@@ -44,8 +37,6 @@ public class ProduitServlet extends HttpServlet {
 		super.init();
 	    templateEngine = TemplateEngineUtil.getTemplateEngine(getServletContext());
 
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        validator = factory.getValidator();
 	}
 
 	/**
