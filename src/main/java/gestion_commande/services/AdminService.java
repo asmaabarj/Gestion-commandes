@@ -36,4 +36,7 @@ public class AdminService {
     public Long count() {
         return adminRepo.count();
     }
+    public Optional<Admin> findByEmail(String email) {
+        return adminRepo.findByEmail(email);
+    }
 }

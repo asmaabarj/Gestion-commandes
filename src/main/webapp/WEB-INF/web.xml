@@ -50,13 +50,21 @@
     <url-pattern>/admins</url-pattern>
   </servlet-mapping>
   <servlet>
-    <description></description>
-    <display-name>loginServlet</display-name>
     <servlet-name>loginServlet</servlet-name>
-    <servlet-class>gestion_commande.controllers.loginServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
+    <servlet-class>gestion_commande.controllers.LoginServlet</servlet-class>
+</servlet>
+<servlet-mapping>
     <servlet-name>loginServlet</servlet-name>
-    <url-pattern>/loginServlet</url-pattern>
-  </servlet-mapping>
+    <url-pattern>/login</url-pattern>
+</servlet-mapping>
+
+  <servlet>
+    <servlet-name>LogoutServlet</servlet-name>
+    <servlet-class>gestion_commande.controllers.LogoutServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>LogoutServlet</servlet-name>
+    <url-pattern>/logout</url-pattern>
+</servlet-mapping>
+
 </web-app>

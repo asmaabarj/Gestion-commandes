@@ -127,4 +127,19 @@ public class ClientImpl implements GenerInerface<Client, Long> {
             em.close();
         }
     }
+    
+    public Optional<Client> findByEmail(String email) {
+        EntityManager em = EntityManagerUtil.getEntityManager(); 
+        try {
+            Client client = em.createQuery("SELECT a FROM Client a WHERE a.email = :email", Client.class)
+                    .setParameter("email", email)
+                    .getSingleResult();
+            return Optional.ofNullable(client);
+        } catch (Exception e) {
+            LoggerMessage.error("Erreur lors de la recherche de l'admin par email: " + e.getMessage());
+            return Optional.empty();
+        } finally {
+            em.close(); 
+        }
+    }
 }
