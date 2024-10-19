@@ -10,9 +10,14 @@
         </h1>
 
         <div class="flex justify-between items-center mb-6">
-            <button @click="showCreateModal = true" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110">
-                <i class="fas fa-plus mr-2"></i> Ajouter un admin
-            </button>
+        
+            <button 
+    @click="showCreateModal = true"
+    class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-lg transition duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-110"
+    th:if="${session.admin.niveauAcces == 1}">
+    <i class="fas fa-plus mr-2"></i> Ajouter un admin
+</button>
+
 
             <form action="" method="get" class="flex items-center">
                 <input type="text" name="search" value="" placeholder="Rechercher un Admin..." class="px-4 py-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-300" />
@@ -32,7 +37,7 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Nom</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Prenom</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Email</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Action</th>
+                        <th  th:if="${session.admin.niveauAcces == 1}" class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Action</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-200">
@@ -41,38 +46,40 @@
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${admin.prenom}"></td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900" th:text="${admin.email}"></td>
                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                            <div class="flex space-x-2">
-                                <button
-  @click="
-    selectedAdmin = {
-      id: $event.currentTarget.getAttribute('data-id'),
-      nom: $event.currentTarget.getAttribute('data-nom'),
-      prenom: $event.currentTarget.getAttribute('data-prenom'),
-      email: $event.currentTarget.getAttribute('data-email'),
-      niveauacces: $event.currentTarget.getAttribute('data-niveauacces')
-    };
-    showEditModal = true;
-  "
-  th:data-id="${admin.id}"
-  th:data-nom="${admin.nom}"
-  th:data-prenom="${admin.prenom}"
-  th:data-email="${admin.email}"
-  th:data-niveauacces="${admin.niveauAcces}"
-  class="text-white hover:text-white bg-indigo-500 hover:bg-indigo-200 p-2 rounded-full transition duration-300 ease-in-out"
->
-  <i class="fas fa-edit"></i>
-</button>
+    <div class="flex space-x-2" th:if="${session.admin.niveauAcces == 1}">
+        <!-- Bouton Editer -->
+        <button
+            @click="
+                selectedAdmin = {
+                    id: $event.currentTarget.getAttribute('data-id'),
+                    nom: $event.currentTarget.getAttribute('data-nom'),
+                    prenom: $event.currentTarget.getAttribute('data-prenom'),
+                    email: $event.currentTarget.getAttribute('data-email'),
+                    niveauacces: $event.currentTarget.getAttribute('data-niveauacces')
+                };
+                showEditModal = true;
+            "
+            th:data-id="${admin.id}"
+            th:data-nom="${admin.nom}"
+            th:data-prenom="${admin.prenom}"
+            th:data-email="${admin.email}"
+            th:data-niveauacces="${admin.niveauAcces}"
+            class="text-white hover:text-white bg-indigo-500 hover:bg-indigo-200 p-2 rounded-full transition duration-300 ease-in-out"
+        >
+            <i class="fas fa-edit"></i>
+        </button>
 
+        <!-- Bouton Supprimer -->
+        <form action="" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer cet admin?');">
+            <input type="hidden" name="action" value="delete">
+            <input type="hidden" name="adminId" th:value="${admin.id}">
+            <button type="submit" class="text-white hover:text-white bg-red-500 hover:bg-red-200 p-2 rounded-full transition duration-300 ease-in-out">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </form>
+    </div>
+</td>
 
-                                <form action="" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer cet admin?');">
-                                    <input type="hidden" name="action" value="delete">
-                                    <input type="hidden" name="adminId" th:value="${admin.id}">
-                                    <button type="submit" class="text-white hover:text-white bg-red-500 hover:bg-red-200 p-2 rounded-full transition duration-300 ease-in-out">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </td>
                     </tr>
                 </tbody>
             </table>
