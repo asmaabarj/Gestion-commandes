@@ -83,6 +83,7 @@ public class ProduitServlet extends HttpServlet {
 		context.setVariable("produits", produits);
 		context.setVariable("currentPage", page);
 		context.setVariable("totalPages", totalPages);
+		context.setVariable("title", "Produit");
 		response.setContentType("text/html;charset=UTF-8");
 		templateEngine.process("produit", context, response.getWriter());
 	}
