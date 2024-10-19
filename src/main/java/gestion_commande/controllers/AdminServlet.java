@@ -2,6 +2,7 @@ package gestion_commande.controllers;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.servlet.ServletException;
@@ -15,6 +16,8 @@ import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import gestion_commande.models.Admin;
 import gestion_commande.services.AdminService;
+import gestion_commande.utilis.PasswordUtil;
+import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 
 public class AdminServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -36,7 +39,8 @@ public class AdminServlet extends HttpServlet {
         templateResolver.setTemplateMode("HTML");
 
         templateEngine = new TemplateEngine();
-        templateEngine.addTemplateResolver(templateResolver);
+		templateEngine.addDialect(new LayoutDialect());
+		templateEngine.addTemplateResolver(templateResolver);
     }
 
     @Override
@@ -70,11 +74,11 @@ public class AdminServlet extends HttpServlet {
         context.setVariable("currentPage", page);
         context.setVariable("totalPages", totalPages);
         context.setVariable("searchQuery", searchQuery); 
+		response.setContentType("text/html;charset=UTF-8");
         templateEngine.process("admins", context, response.getWriter());
         
     }
 
-    
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -86,6 +90,7 @@ public class AdminServlet extends HttpServlet {
             String motpasse = request.getParameter("motpasse");
             String niveauaccesStr = request.getParameter("niveauacces");
             Integer niveauacces = Integer.parseInt(niveauaccesStr);
+            
             Admin newAdmin = new Admin();
             newAdmin.setNom(nom);
             newAdmin.setPrenom(prenom);
@@ -95,16 +100,45 @@ public class AdminServlet extends HttpServlet {
 
             adminServices.create(newAdmin); 
             response.sendRedirect(request.getContextPath() + "/admins");
-           
-        }else if ("delete".equals(action)) {
-        	Long id = (long) Integer.parseInt(request.getParameter("adminId"));
-        	adminServices.delete(id);
-            response.sendRedirect(request.getContextPath() +"/admins");
+
+        } else if ("delete".equals(action)) {
+            // Delete logic (unchanged)
+            Long id = Long.parseLong(request.getParameter("adminId"));
+            adminServices.delete(id);
+            response.sendRedirect(request.getContextPath() + "/admins");
+
+        } else if ("edit".equals(action)) {
+            // Edit logic
+            Long id = Long.parseLong(request.getParameter("adminId"));
+            Optional<Admin> optionalAdmin = adminServices.findById(id);
+            
+            if (optionalAdmin.isPresent()) {
+                Admin admin = optionalAdmin.get();
+
+                String nom = request.getParameter("nom");
+                String prenom = request.getParameter("prenom");
+                String email = request.getParameter("email");
+                String niveauaccesStr = request.getParameter("niveauacces");
+                Integer niveauacces = Integer.parseInt(niveauaccesStr);
+
+                admin.setNom(nom);
+                admin.setPrenom(prenom);
+                admin.setEmail(email);
+                admin.setNiveauAcces(niveauacces);
+
+                String motpasse = request.getParameter("motpasse");
+                if (motpasse != null && !motpasse.isEmpty()) {
+                    // Hash the new password and update
+                    String hashedPassword = PasswordUtil.hashPassword(motpasse);
+                    admin.setMotDePasse(hashedPassword);
+                }
+
+                adminServices.update(admin);
+            }
+
+            response.sendRedirect(request.getContextPath() + "/admins");
         }
-      
     }
-
-
 
 
 }
