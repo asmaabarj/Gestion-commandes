@@ -13,12 +13,11 @@ import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import gestion_commande.models.Client;
 import gestion_commande.services.ClientService;
 import gestion_commande.utilis.PasswordUtil;
-import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
+import gestion_commande.utilis.TemplateEngineUtil;
 
 public class ClientServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -34,15 +33,8 @@ public class ClientServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(getServletContext());
-        
-        templateResolver.setPrefix("/WEB-INF/templates/");
-        templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode("HTML");
+	    templateEngine = TemplateEngineUtil.getTemplateEngine(getServletContext());
 
-        templateEngine = new TemplateEngine();
-		templateEngine.addDialect(new LayoutDialect());
-		templateEngine.addTemplateResolver(templateResolver);
     }
 
     @Override

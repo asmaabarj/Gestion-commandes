@@ -13,12 +13,11 @@ import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.WebContext;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import gestion_commande.models.Admin;
 import gestion_commande.services.AdminService;
 import gestion_commande.utilis.PasswordUtil;
-import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
+import gestion_commande.utilis.TemplateEngineUtil;
 
 public class AdminServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -34,20 +33,17 @@ public class AdminServlet extends HttpServlet {
     @Override
     public void init() throws ServletException {
         super.init();
-        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(getServletContext());
-        templateResolver.setPrefix("/WEB-INF/templates/");
-        templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode("HTML");
+	    templateEngine = TemplateEngineUtil.getTemplateEngine(getServletContext());
 
-        templateEngine = new TemplateEngine();
-		templateEngine.addDialect(new LayoutDialect());
-		templateEngine.addTemplateResolver(templateResolver);
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
     	  HttpSession session = request.getSession(false);
+    	  
+    	   
     	    if (session == null || session.getAttribute("admin") == null) {
     	        response.sendRedirect(request.getContextPath() + "/login");
     	        return;

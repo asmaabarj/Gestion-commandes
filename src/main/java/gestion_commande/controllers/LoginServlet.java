@@ -10,14 +10,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
-import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 
 import gestion_commande.models.Admin;
 import gestion_commande.models.Client;
 import gestion_commande.services.AdminService;
 import gestion_commande.services.ClientService;
 import gestion_commande.utilis.PasswordUtil;
+import gestion_commande.utilis.TemplateEngineUtil;
 
 public class LoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
@@ -28,22 +27,17 @@ public class LoginServlet extends HttpServlet {
 
     public LoginServlet() {
         super();
+        adminServices = new AdminService();
+        clientServices = new ClientService(); 
     }
 
     @Override
     public void init() throws ServletException {
         super.init();
-        ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(getServletContext());
-        templateResolver.setPrefix("/WEB-INF/templates/");
-        templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode("HTML");
+	    templateEngine = TemplateEngineUtil.getTemplateEngine(getServletContext());
 
-        templateEngine = new TemplateEngine();
-        templateEngine.addDialect(new LayoutDialect());
-        templateEngine.addTemplateResolver(templateResolver);
         
-        adminServices = new AdminService();
-        clientServices = new ClientService(); 
+   
     }
 
     @Override
